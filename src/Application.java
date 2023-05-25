@@ -30,7 +30,7 @@ public class Application {
     public void run() {
 //1 Для поиска несовершеннолетних используйте промежуточный метод filter() и терминальный метод count()
         long count = persons.stream()
-                .filter(x -> x.getAge() < 18)
+                .filter(person -> person.getAge() < 18)
                 .count();
 //2
 /*
@@ -39,8 +39,8 @@ public class Application {
 Так как требуется получить список List<String> терминальным методом будет collect(Collectors.toList())
  */
         List<String> conscript = persons.stream()
-                .filter(age -> age.getAge() >= 18)
-                .filter(sex -> sex.getSex().equals(Sex.MAN))
+                .filter(person -> person.getAge() >= 18)
+                .filter(person -> person.getSex().equals(Sex.MAN))
                 .map(person -> person.getName())
                 .collect(Collectors.toList());
 //3
@@ -50,8 +50,9 @@ public class Application {
 по фамилиям Comparator.comparing(). Завершить стрим необходимо методом collect()
  */
         List<Person> personList = persons.stream()
-                .filter(age -> age.getAge() >= 18 && age.getAge() <= 60)
-                .filter(education -> education.getEducation().equals(Education.HIGHER))
+                .filter((person) -> (person.getAge() >= 18 && person.getAge() <= 60 && person.getSex().equals(Sex.WOMAN))
+                                 || (person.getAge() >= 18 && person.getAge() <= 65 && person.getSex().equals(Sex.MAN)))
+                .filter(person -> person.getEducation().equals(Education.HIGHER))
                 .sorted(Comparator.comparing(Person::getSurname))
                 .collect(Collectors.toList());
     }
